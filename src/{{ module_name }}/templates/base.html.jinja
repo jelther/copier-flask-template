@@ -24,10 +24,8 @@
     <script src="{{ '{{' }} url_for('static', filename='js/hyperscript.min.js') {{ '}}' }}" defer></script>
     {%- endif %}
 
-    <script>
-        {% raw %}{% block extra_script %}{% endraw %}
-        {% raw %}{% endblock %}{% endraw %}
-    </script>
+    {% block extra_head %}
+    {% endblock %}
 </head>
 
 {% if use_htmx %}
