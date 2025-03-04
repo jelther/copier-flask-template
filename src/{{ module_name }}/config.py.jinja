@@ -11,7 +11,7 @@ class Config:
     APP_NAME = os.environ.get("APP_NAME", "{{ project_name }}")
     DEBUG = True
 
-    SECRET_KEY = os.getenv("SECRET_KEY", "{{ random_ascii_string(24) }}")
+    SECRET_KEY = os.getenv("SECRET_KEY", "my-secret-key")
 
     TASK_APP_DIR = Path(__file__).resolve().parent
     PACKAGE_DIR = TASK_APP_DIR.parent
