@@ -23,6 +23,11 @@ use_flask_executor:
     help: Use Flask-Executor?
     default: false
 
+use_flask_restx:
+    type: bool
+    help: Use Flask-RESTx?
+    default: false
+
 flask_port:
     type: int
     help: Flask port

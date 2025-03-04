@@ -7,13 +7,17 @@ requires-python = ">={{ python_version }}"
 
 dependencies = [
     "flask>=3.1.0",
+{%- if use_flask_executor %}
     "flask-executor>=1.0.0",
-{% if use_htmx %}
+{%- endif %}
+{%- if use_htmx %}
     "flask-htmx>=0.4.0",
-{% endif %}
+{%- endif %}
     "flask-limiter>=3.10.1",
     "flask-migrate>=4.1.0",
+{%- if use_flask_restx %}
     "flask-restx>=1.3.0",
+{%- endif %}
     "flask-sqlalchemy>=3.1.1",
     "flask-wtf>=1.2.2",
     "gunicorn>=23.0.0",
