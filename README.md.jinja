@@ -1,1 +1,39 @@
 # {{ project_name }}
+
+{{ project_description }}
+
+## Requirements
+
+- Python {{ python_version }}
+- Taskfile (https://taskfile.dev/)
+- [Flask](https://flask.palletsprojects.com/en/3.1.x/)
+
+## Installation
+
+```bash
+pip install -r requirements.txt
+```
+
+Or using [uv](https://github.com/astral-sh/uv):
+
+```bash
+uv install
+```
+
+## Development
+
+The project includes several development tools:
+
+```bash
+# Format code
+task fmt
+
+# Run all checks (format, lint, security)
+task all-checks
+
+# Run tests
+task test
+
+# Run tests with coverage
+task cov
+```
