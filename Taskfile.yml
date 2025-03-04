@@ -1,0 +1,89 @@
+version: '3'
+
+tasks:
+  fmt:
+    desc: "Format code with Black"
+    cmds:
+      - black src/ tests/
+
+  fmt-check:
+    desc: "Check formatting with Black"
+    cmds:
+      - black --check src/
+
+  lint:
+    desc: "Run Ruff to check code quality"
+    cmds:
+      - ruff check --fix src/
+
+  lint-check:
+    desc: "Check code quality (no fixes)"
+    cmds:
+      - ruff check src/
+
+  security-check:
+    desc: "Run Bandit for security checks"
+    cmds:
+      - bandit -r src/
+
+  type-check:
+    desc: "Run MyPy type checks"
+    cmds:
+      - mypy --ignore-missing-imports --check-untyped-defs src/
+
+  sort-imports:
+    desc: "Sort imports with isort"
+    cmds:
+      - isort src/ tests/
+
+  sort-imports-check:
+    desc: "Check import sorting without modifying code"
+    cmds:
+      - isort src/ --check
+
+  all-checks:
+    desc: "Run all checks (formatting, linting, security, type checks, import sorting)"
+    cmds:
+      - task: fmt-check
+      - task: lint-check
+      - task: security-check
+      - task: sort-imports-check
+      - task: type-check
+
+  all-fix:
+    desc: "Automatically fix issues (formatting, lint, imports)"
+    cmds:
+      - task: fmt
+      - task: lint
+      - task: sort-imports
+
+  test:
+    desc: "Run tests with pytest"
+    cmds:
+      - pytest tests/
+
+  cov:
+    desc: "Run tests with coverage report"
+    cmds:
+      - pytest --cov=src --cov-report html tests/
+
+  tox:
+    desc: "Run tests in all environments using tox"
+    cmds:
+      - tox run-parallel -v
+
+  build:
+    desc: "Build Docker image"
+    cmds:
+      - docker build --platform=linux/amd64 -t {{ module_name }}:latest .
+
+  build-arm:
+    desc: "Build Docker image for ARM"
+    cmds:
+      - docker build --platform=linux/arm64 -t {{ module_name }}:arm .
+
+  run:
+    desc: "Run {{ project_name }}"
+    cmds:
+      - task: build-arm
+      - docker run -it --rm -env-file .env -p {{ flask_port }}:{{ flask_port }} {{ module_name }}:latest

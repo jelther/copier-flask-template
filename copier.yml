@@ -7,3 +7,14 @@ project_name:
 module_name:
     type: str
     help: What is your Python module name?
+
+use_htmx:
+    type: bool
+    help: Use HTMX?
+    default: true
+
+
+flask_port:
+    type: int
+    help: Flask port
+    default: 8000
