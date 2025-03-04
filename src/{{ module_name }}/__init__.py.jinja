@@ -1,3 +1,4 @@
+import logging
 import os
 from datetime import datetime
 from importlib.metadata import version
@@ -8,9 +9,13 @@ from flask_htmx import HTMX
 from flask_wtf import CSRFProtect
 
 from {{ module_name }}.config import DevelopmentConfig, ProductionConfig, TestingConfig
-from {{ module_name }}.core import health, limiter{% if use_flask_executor %}
+from {{ module_name }}.core import health, limiter
+{%- if use_flask_executor %}
 , executor
-{% endif %}
+{%- endif %}
+{%- if use_flask_apscheduler %}
+, scheduler
+{%- endif %}
 from {{ module_name }}.database import db, migrate
 from {{ module_name }}.errors import server_error_handler
 from {{ module_name }}.routes.main import blueprint as index_blueprint
@@ -19,6 +24,19 @@ load_dotenv()
 
 
 def create_app():
+
+    {%- if use_flask_apscheduler %}
+    def is_debug_mode():
+        """Get app debug status."""
+        debug = os.environ.get("FLASK_DEBUG")
+        if not debug:
+            return os.environ.get("FLASK_ENV") == "development"
+        return debug.lower() not in ("0", "false", "no")
+
+    def is_werkzeug_reloader_process():
+        """Get werkzeug status."""
+        return os.environ.get("WERKZEUG_RUN_MAIN") == "true"
+    {%- endif %}
 
     app = Flask(__name__)
     __VERSION__ = version(__name__)
@@ -76,5 +94,20 @@ def create_app():
     # Initialize flask-wtf
     csrf = CSRFProtect()
     csrf.init_app(app)
+
+    {%- if use_flask_apscheduler %}
+    # Initialize flask-apscheduler
+    scheduler.init_app(app)
+
+    logging.getLogger("apscheduler").setLevel(logging.INFO)
+
+    # pylint: disable=C0415, W0611
+    with app.app_context():
+        # pylint: disable=W0611
+        if is_debug_mode() and not is_werkzeug_reloader_process():
+            pass
+        else:
+            scheduler.start()
+    {%- endif %}
 
     return app

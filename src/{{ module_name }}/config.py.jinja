@@ -30,6 +30,11 @@ class Config:
     RATELIMIT_DEFAULT = "200 per hour,60 per minute"
     RATELIMIT_IN_MEMORY_FALLBACK = True
 
+    {%- if use_flask_apscheduler %}
+    # Flask_APScheduler configuration
+    SCHEDULER_API_ENABLED = True
+    {%- endif %}
+
 
 class DevelopmentConfig(Config):
     DEBUG = True

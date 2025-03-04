@@ -42,6 +42,11 @@ use_flask_restx:
     help: Use Flask-RESTx?
     default: false
 
+use_flask_apscheduler:
+    type: bool
+    help: Use Flask-APScheduler?
+    default: true
+
 flask_port:
     type: int
     help: Flask port
