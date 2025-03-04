@@ -1,0 +1,14 @@
+## Flask-limiter configuration
+from flask_executor import Executor
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+
+limiter = Limiter(get_remote_address)
+
+{% if use_flask_executor %}
+executor = Executor()
+{% endif %}
+
+
+def health():
+    return "OK", 200

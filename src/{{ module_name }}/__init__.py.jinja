@@ -1,0 +1,82 @@
+import os
+from datetime import datetime
+from importlib.metadata import version
+
+from dotenv import load_dotenv
+from flask import Flask
+from flask_htmx import HTMX
+from flask_migrate import Migrate
+from flask_wtf import CSRFProtect
+
+from {{ module_name }}.config import (DevelopmentConfig, ProductionConfig,
+                                  TestingConfig)
+from {{ module_name }}.core import health, limiter{% if use_flask_executor %}
+, executor
+{% endif %}
+from {{ module_name }}.database import db
+from {{ module_name }}.errors import server_error_handler
+from {{ module_name }}.routes.main import blueprint as index_blueprint
+
+load_dotenv()
+
+
+def create_app():
+
+    app = Flask(__name__)
+    __VERSION__ = version(__name__)
+
+    environment: str = os.environ.get("FLASK_ENV", "development")
+
+    if environment == "development":
+        app.config.from_object(DevelopmentConfig)
+    elif environment == "production":
+        app.config.from_object(ProductionConfig)
+    elif environment == "testing":
+        app.config.from_object(TestingConfig)
+
+    @app.context_processor
+    def inject_globals():
+        return {
+            "app_name": app.config["APP_NAME"],
+            "worker_mode": False,
+            "app_version": __VERSION__,
+            "now": datetime.now(),
+            "is_production": environment == "production",
+        }
+
+    app.config["VERSION"] = version(__name__)
+
+    app.add_url_rule("/health", view_func=health, methods=["GET"])
+    limiter.exempt(health)
+
+    # Register blueprints
+    app.register_blueprint(index_blueprint, url_prefix="/")
+
+    # Error handlers
+    app.register_error_handler(404, server_error_handler)
+    app.register_error_handler(500, server_error_handler)
+    app.register_error_handler(403, server_error_handler)
+
+    # Initialize HTMX
+    htmx = HTMX()
+    htmx.init_app(app)
+
+    # Initialize DB
+    db.init_app(app)
+
+    {% if use_flask_executor %}
+    executor.init_app(app)
+    {% endif %}
+
+    # Initialize Migrations
+    migrate = Migrate()
+    migrate.init_app(app, db)
+
+    # Initialize limiter
+    limiter.init_app(app)
+
+    # Initialize flask-wtf
+    csrf = CSRFProtect()
+    csrf.init_app(app)
+
+    return app

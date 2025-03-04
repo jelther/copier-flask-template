@@ -1,0 +1,21 @@
+services:
+  init:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./db/:/app/db/
+    command: sh -c "if [ ! -f /app/db/{{ module_name }}.db ]; then touch /app/db/{{ module_name }}.db; fi; uv run flask db upgrade"
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - {{ flask_port }}:{{ flask_port }}
+    volumes:
+      - ./db/:/app/db/
+    depends_on:
+      init:
+        condition: service_completed_successfully
+    restart: always

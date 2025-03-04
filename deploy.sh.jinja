@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# Check if the server IP is passed as a parameter
+if [ -z "$1" ]; then
+  echo "Usage: $0 <server_ip>"
+  exit 1
+fi
+
+# Assign the server IP to a variable
+SERVER_IP=$1
+
+# Define the user to SSH into the remote server
+USER="nimda"
+
+# Save docker image to .tar file
+echo "Saving Docker image to {{ module_name }}.tar"
+rm -rf {{ module_name }}.tar
+docker save {{ module_name }}:latest -o {{ module_name }}.tar
+
+# Ensure the tar file was created successfully
+if [ ! -f {{ module_name }}.tar ]; then
+  echo "Docker image save failed. Exiting."
+  exit 1
+fi
+
+# SSH into the remote server and create a temporary directory
+echo "Creating temporary directory on remote server"
+ssh -T $USER@$SERVER_IP <<EOF
+  rm -rf /tmp/{{ module_name }}.tar
+EOF
+
+## Transfer .tar file to remote server
+echo "Transferring .tar file to remote server"
+scp -O {{ module_name }}.tar $USER@$SERVER_IP:/tmp/{{ module_name }}.tar
+
+## Load the Docker image from the .tar file on the remote server
+read -sp "Enter your sudo password for $SERVER_IP: " password
+echo
+
+echo "Loading Docker image from .tar file on remote server"
+ssh -t "$USER@$SERVER_IP" <<EOF
+    echo "$password" | sudo -S docker image rm -f {{ module_name }}:latest
+    echo "$password" | sudo -S docker load -i /tmp/{{ module_name }}.tar
+    rm -rf /tmp/{{ module_name }}.tar
+EOF

@@ -1,0 +1,43 @@
+import os
+from pathlib import Path
+
+from dotenv import load_dotenv
+from loguru import logger
+
+load_dotenv()
+
+
+class Config:
+    APP_NAME = os.environ.get("APP_NAME", "{{ project_name }}")
+    DEBUG = True
+
+    SECRET_KEY = os.getenv("SECRET_KEY", "{{ random_ascii_string(24) }}")
+
+    TASK_APP_DIR = Path(__file__).resolve().parent
+    PACKAGE_DIR = TASK_APP_DIR.parent
+    PROJECT_ROOT = PACKAGE_DIR.parent
+    SQLALCHEMY_DATABASE_URI = os.getenv(
+        "SQLALCHEMY_DATABASE_URI", f"sqlite:///{PROJECT_ROOT}/{{ module_name }}.db"
+    )
+    logger.debug("Running DB on {}".format(SQLALCHEMY_DATABASE_URI))
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+    # Rate limiter configuration
+    RATELIMIT_STORAGE_URI = os.getenv("RATELIMIT_STORAGE_URI", "memory://")
+    RATELIMIT_STRATEGY = "moving-window"
+    RATELIMIT_STORAGE_OPTIONS = {"socket_connect_timeout": 30}
+    RATELIMIT_DEFAULT = "200 per hour,60 per minute"
+    RATELIMIT_IN_MEMORY_FALLBACK = True
+
+
+class DevelopmentConfig(Config):
+    DEBUG = True
+
+
+class ProductionConfig(Config):
+    DEBUG = False
+
+
+class TestingConfig(Config):
+    SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
+    TESTING = True
