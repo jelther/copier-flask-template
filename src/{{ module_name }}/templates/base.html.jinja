@@ -12,13 +12,13 @@
 
     {% if use_htmx %}
     <!-- HTMX 2.0.1 -->
-    <script src="{{ url_for('static', filename='js/htmx.min.js') }}" defer></script>
+    <script src="{{{{ url_for('static', filename='js/htmx.min.js') }}}}" defer></script>
 
     <!-- HTMX Extensions 2.0.0 -->
-    <script src="{{ url_for('static', filename='js/response-targets.js') }}" defer></script>
+    <script src="{{{{ url_for('static', filename='js/response-targets.js') }}}}" defer></script>
 
     <!-- Hyperscript 0.9.12 -->
-    <script src="{{ url_for('static', filename='js/hyperscript.min.js') }}" defer></script>
+    <script src="{{{{ url_for('static', filename='js/hyperscript.min.js') }}}}" defer></script>
     {% endif %}
 </head>
 
