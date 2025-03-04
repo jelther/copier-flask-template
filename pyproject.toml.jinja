@@ -44,7 +44,9 @@ dev = [
 ]
 
 [tool.tox]
-env_list = ["py313"]
+env_list = [
+    "py{{ python_version | replace(".", "") }}
+]
 isolated_build = true
 
 [tool.pytest_env]
