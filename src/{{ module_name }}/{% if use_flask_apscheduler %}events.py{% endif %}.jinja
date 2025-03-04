@@ -1,14 +1,8 @@
 """Log scheduler events."""
 
-
-from apscheduler.events import (
-    EVENT_JOB_ADDED,
-    EVENT_JOB_ERROR,
-    EVENT_JOB_EXECUTED,
-    EVENT_JOB_MISSED,
-    EVENT_JOB_REMOVED,
-    EVENT_JOB_SUBMITTED,
-)
+from apscheduler.events import (EVENT_JOB_ADDED, EVENT_JOB_ERROR,
+                                EVENT_JOB_EXECUTED, EVENT_JOB_MISSED,
+                                EVENT_JOB_REMOVED, EVENT_JOB_SUBMITTED)
 
 from {{ module_name }}.core import scheduler
 
