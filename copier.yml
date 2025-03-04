@@ -17,6 +17,11 @@ app_description:
     help: What is your project description?
     required: true
 
+use_flask_migrate:
+    type: bool
+    help: Use Flask-Migrate?
+    default: true
+
 use_pico_css:
     type: bool
     help: Use Pico CSS?
