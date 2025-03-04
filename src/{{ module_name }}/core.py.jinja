@@ -1,13 +1,15 @@
 ## Flask-limiter configuration
+{%- if use_flask_executor %}
 from flask_executor import Executor
+{%- endif %}
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
 limiter = Limiter(get_remote_address)
 
-{% if use_flask_executor %}
+{%- if use_flask_executor %}
 executor = Executor()
-{% endif %}
+{%- endif %}
 
 
 def health():
