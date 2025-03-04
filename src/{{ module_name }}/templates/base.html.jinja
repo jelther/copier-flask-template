@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light dark">
+    {% raw %}{% block title %}{% endraw %}
+    {{ '{{' }} app_name {{ '}}' }}
+    {% raw %}{% endblock %}{% endraw %}
+    </title>
 
     {%- if use_pico_css %}
     <!-- Pico CSS 2.0 -->
