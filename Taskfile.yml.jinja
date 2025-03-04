@@ -90,5 +90,5 @@ tasks:
   run:
     desc: "Run {{ project_name }}"
     cmds:
-      - task: build-arm
-      - docker run -it --rm -env-file .env -p {{ flask_port }}:{{ flask_port }} {{ module_name }}:latest
+      - task: build
+      - docker run -it --rm --env-file .env -p {{ flask_port }}:{{ flask_port }} {{ module_name }}:latest
