@@ -1,24 +1,21 @@
 <!DOCTYPE html>
 <html lang="en" class="has-navbar-fixed-top">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light dark">
-    <title>{% block title %}{{ app_name }}{% endblock %}</title>
+    <title>{% block title %}{{ '{{' }} app_name {{ '}}' }}{% endblock %}</title>
 
     <!-- Pico CSS 2.0 -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/pico.min.css') }}">
+    <link rel="stylesheet" href="{{ '{{' }} url_for('static', filename='css/pico.min.css') {{ '}}' }}">
 
     {% if use_htmx %}
     <!-- HTMX 2.0.1 -->
-    <script src="{{{{ url_for('static', filename='js/htmx.min.js') }}}}" defer></script>
-
+    <script src="{{ '{{' }} url_for('static', filename='js/htmx.min.js') {{ '}}' }}" defer></script>
     <!-- HTMX Extensions 2.0.0 -->
-    <script src="{{{{ url_for('static', filename='js/response-targets.js') }}}}" defer></script>
-
+    <script src="{{ '{{' }} url_for('static', filename='js/response-targets.js') {{ '}}' }}" defer></script>
     <!-- Hyperscript 0.9.12 -->
-    <script src="{{{{ url_for('static', filename='js/hyperscript.min.js') }}}}" defer></script>
+    <script src="{{ '{{' }} url_for('static', filename='js/hyperscript.min.js') {{ '}}' }}" defer></script>
     {% endif %}
 </head>
 
@@ -30,13 +27,12 @@
 
     <!-- Header -->
     <header class="container">
-
       <nav>
       <hgroup>
-        <h1>{{ app_name }}</h1>
+        <h1>{{ '{{' }} app_name {{ '}}' }}</h1>
       </hgroup>
         <ul>
-            <li><a href="{{ url_for('main.index') }}">Home</a></li>
+            <li><a href="{{ '{{' }} url_for('main.index') {{ '}}' }}">Home</a></li>
         </ul>
       </nav>
     </header>
@@ -44,8 +40,8 @@
 
     <!-- Main Content Section -->
     <main class="container">
-
         <!-- Notifications -->
+        {% raw %}
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
         {% for category, message in messages %}
@@ -55,6 +51,7 @@
         {% endfor %}
         {% endif %}
         {% endwith %}
+        {% endraw %}
 
         <div id="notification"></div>
 
@@ -65,8 +62,8 @@
     <!-- Footer -->
     <footer class="container">
         <hr />
-        <p>&copy; {{ now.year }} - {{ app_name }}. All rights reserved.</p>
+        <p>&copy; {{ '{{' }} now.year {{ '}}' }} - {{ '{{' }} app_name {{ '}}' }}. All rights reserved.</p>
     </footer>
-</body>
 
+</body>
 </html>
