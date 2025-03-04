@@ -8,12 +8,11 @@ from flask_htmx import HTMX
 from flask_migrate import Migrate
 from flask_wtf import CSRFProtect
 
-from {{ module_name }}.config import (DevelopmentConfig, ProductionConfig,
-                                  TestingConfig)
+from {{ module_name }}.config import DevelopmentConfig, ProductionConfig, TestingConfig
 from {{ module_name }}.core import health, limiter{% if use_flask_executor %}
 , executor
 {% endif %}
-from {{ module_name }}.database import db
+from {{ module_name }}.database import db, migrate
 from {{ module_name }}.errors import server_error_handler
 from {{ module_name }}.routes.main import blueprint as index_blueprint
 
@@ -69,7 +68,6 @@ def create_app():
     {% endif %}
 
     # Initialize Migrations
-    migrate = Migrate()
     migrate.init_app(app, db)
 
     # Initialize limiter
