@@ -18,6 +18,11 @@ use_htmx:
     help: Use HTMX?
     default: true
 
+use_flask_executor:
+    type: bool
+    help: Use Flask-Executor?
+    default: false
+
 flask_port:
     type: int
     help: Flask port
