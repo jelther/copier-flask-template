@@ -13,6 +13,11 @@ module_name:
     type: str
     help: What is your Python module name?
 
+use_pico_css:
+    type: bool
+    help: Use Pico CSS?
+    default: true
+
 use_htmx:
     type: bool
     help: Use HTMX?
