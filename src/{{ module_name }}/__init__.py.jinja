@@ -36,6 +36,7 @@ def create_app():
     def inject_globals():
         return {
             "app_name": app.config["APP_NAME"],
+            "app_description": app.config["APP_DESCRIPTION"],
             "worker_mode": False,
             "app_version": __VERSION__,
             "now": datetime.now(),

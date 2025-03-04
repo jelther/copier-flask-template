@@ -9,6 +9,7 @@ load_dotenv()
 
 class Config:
     APP_NAME = os.environ.get("APP_NAME", "{{ project_name }}")
+    APP_DESCRIPTION = os.getenv("APP_DESCRIPTION", "{{ app_description }}")
     DEBUG = True
 
     SECRET_KEY = os.getenv("SECRET_KEY", "my-secret-key")
