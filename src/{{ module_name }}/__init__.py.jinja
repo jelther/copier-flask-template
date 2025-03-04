@@ -5,7 +5,6 @@ from importlib.metadata import version
 from dotenv import load_dotenv
 from flask import Flask
 from flask_htmx import HTMX
-from flask_migrate import Migrate
 from flask_wtf import CSRFProtect
 
 from {{ module_name }}.config import DevelopmentConfig, ProductionConfig, TestingConfig
@@ -63,9 +62,9 @@ def create_app():
     # Initialize DB
     db.init_app(app)
 
-    {% if use_flask_executor %}
+    {-% if use_flask_executor %}
     executor.init_app(app)
-    {% endif %}
+    {-% endif %}
 
     # Initialize Migrations
     migrate.init_app(app, db)
