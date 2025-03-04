@@ -62,9 +62,9 @@ def create_app():
     # Initialize DB
     db.init_app(app)
 
-    {-% if use_flask_executor %}
+    {%- if use_flask_executor %}
     executor.init_app(app)
-    {-% endif %}
+    {%- endif %}
 
     # Initialize Migrations
     migrate.init_app(app, db)
