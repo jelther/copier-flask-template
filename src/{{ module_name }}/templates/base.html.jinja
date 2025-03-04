@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light dark">
+    <title>
     {% raw %}{% block title %}{% endraw %}
     {{ '{{' }} app_name {{ '}}' }}
     {% raw %}{% endblock %}{% endraw %}
@@ -60,6 +61,8 @@
 
         <div id="notification"></div>
 
+        {% raw %}{% block content %}{% endraw %}
+        {% raw %}{% endblock %}{% endraw %}
     </main>
 
     <!-- Footer -->
