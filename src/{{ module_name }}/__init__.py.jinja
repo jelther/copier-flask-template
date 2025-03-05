@@ -22,19 +22,6 @@ load_dotenv()
 
 def create_app():
 
-    {%- if use_flask_apscheduler %}
-    def is_debug_mode():
-        """Get app debug status."""
-        debug = os.environ.get("FLASK_DEBUG")
-        if not debug:
-            return os.environ.get("FLASK_ENV") == "development"
-        return debug.lower() not in ("0", "false", "no")
-
-    def is_werkzeug_reloader_process():
-        """Get werkzeug status."""
-        return os.environ.get("WERKZEUG_RUN_MAIN") == "true"
-    {%- endif %}
-
     app = Flask(__name__)
     __VERSION__ = version(__name__)
 
