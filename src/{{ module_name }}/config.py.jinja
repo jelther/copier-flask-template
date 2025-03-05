@@ -18,7 +18,7 @@ class Config:
     PACKAGE_DIR = TASK_APP_DIR.parent
     PROJECT_ROOT = PACKAGE_DIR.parent
     SQLALCHEMY_DATABASE_URI = os.getenv(
-        "SQLALCHEMY_DATABASE_URI", f"sqlite:///{PROJECT_ROOT}/{{ module_name }}.db"
+        "SQLALCHEMY_DATABASE_URI", f"sqlite:///{PROJECT_ROOT}/db/{{ module_name }}.db"
     )
     logger.debug("Running DB on {}".format(SQLALCHEMY_DATABASE_URI))
     SQLALCHEMY_TRACK_MODIFICATIONS = False
