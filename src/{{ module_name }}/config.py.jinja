@@ -43,6 +43,11 @@ class DevelopmentConfig(Config):
 class ProductionConfig(Config):
     DEBUG = False
 
+    {%- if use_flask_apscheduler %}
+    # Flask_APScheduler configuration
+    SCHEDULER_API_ENABLED = False
+    {%- endif %}
+
 
 class TestingConfig(Config):
     SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
