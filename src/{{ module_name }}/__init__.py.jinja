@@ -3,6 +3,9 @@ import os
 from datetime import datetime
 from importlib.metadata import version
 
+from apscheduler.events import (EVENT_JOB_ADDED, EVENT_JOB_ERROR,
+                                EVENT_JOB_EXECUTED, EVENT_JOB_MISSED,
+                                EVENT_JOB_REMOVED, EVENT_JOB_SUBMITTED)
 from dotenv import load_dotenv
 from flask import Flask
 from flask_htmx import HTMX
@@ -95,13 +98,15 @@ def create_app():
 
     logging.getLogger("apscheduler").setLevel(logging.INFO)
 
-    # pylint: disable=C0415, W0611
-    with app.app_context():
-        # pylint: disable=W0611
-        if is_debug_mode() and not is_werkzeug_reloader_process():
-            pass
-        else:
-            scheduler.start()
+    scheduler.add_listener(job_missed, EVENT_JOB_MISSED)
+    scheduler.add_listener(job_error, EVENT_JOB_ERROR)
+    scheduler.add_listener(job_executed, EVENT_JOB_EXECUTED)
+    scheduler.add_listener(job_added, EVENT_JOB_ADDED)
+    scheduler.add_listener(job_removed, EVENT_JOB_REMOVED)
+    scheduler.add_listener(job_submitted, EVENT_JOB_SUBMITTED)
+
+    if environment not in ["testing"]:
+        scheduler.start()
     {%- endif %}
 
     return app
