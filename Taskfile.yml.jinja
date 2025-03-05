@@ -78,14 +78,9 @@ tasks:
       - tox run-parallel -v
 
   build:
-    desc: "Build Docker image"
+    desc: "Build Docker"
     cmds:
-      - docker build --platform=linux/amd64 -t {{ module_name }}:latest .
-
-  build-arm:
-    desc: "Build Docker image for ARM"
-    cmds:
-      - docker build --platform=linux/arm64 -t {{ module_name }}:arm .
+      - docker buildx build --platform linux/amd64,linux/arm64 -t {{ module_name }}:latest .
 
   run:
     desc: "Run {{ project_name }}"
