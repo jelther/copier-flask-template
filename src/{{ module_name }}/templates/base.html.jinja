@@ -29,7 +29,9 @@
 </head>
 
 {% if use_htmx %}
-<body hx-ext="response-targets">
+{% raw %}
+<body hx-ext="response-targets" hx-headers='{"X-CSRFToken": "{{ csrf_token() }}"}'>
+{% endraw %}
 {% else %}
 <body>
 {% endif %}
