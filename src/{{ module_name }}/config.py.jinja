@@ -37,6 +37,7 @@ class Config:
 
 
 class DevelopmentConfig(Config):
+    APP_URL = os.getenv("APP_URL", "https://localhost")
     DEBUG = True
 
 
