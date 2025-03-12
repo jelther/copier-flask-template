@@ -62,9 +62,11 @@ def create_app():
     app.register_error_handler(500, server_error_handler)
     app.register_error_handler(403, server_error_handler)
 
+    {%- if use_htmx %}
     # Initialize HTMX
     htmx = HTMX()
     htmx.init_app(app)
+    {%- endif %}
 
     # Initialize DB
     db.init_app(app)
