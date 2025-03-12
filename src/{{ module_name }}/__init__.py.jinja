@@ -3,12 +3,16 @@ import os
 from datetime import datetime
 from importlib.metadata import version
 
+{%- if use_flask_apscheduler %}
 from apscheduler.events import (EVENT_JOB_ADDED, EVENT_JOB_ERROR,
                                 EVENT_JOB_EXECUTED, EVENT_JOB_MISSED,
                                 EVENT_JOB_REMOVED, EVENT_JOB_SUBMITTED)
+{%- endif %}
 from dotenv import load_dotenv
 from flask import Flask
+{%- if use_htmx %}
 from flask_htmx import HTMX
+{%- endif %}
 from flask_wtf import CSRFProtect
 
 from {{ module_name }}.config import DevelopmentConfig, ProductionConfig, TestingConfig
